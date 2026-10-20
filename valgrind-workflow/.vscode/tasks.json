@@ -1,0 +1,117 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "QNX: build debug",
+			"command": "make DEBUG=-g OPTIMIZE_TYPE=NONE",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"PATH": "${env:PATH}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "QNX: install",
+			"command": "make INSTALL_ROOT_nto=${config:qnx.installRoot}/nto USE_INSTALL_ROOT=1 hinstall install",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"PATH": "${env:PATH}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"type": "shell",
+			"label": "QNX: clean",
+			"command": "make clean",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"PATH": "${env:PATH}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"type": "shell",
+			"label": "QNX: build",
+			"command": "make",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"PATH": "${env:PATH}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+            "label": "QNX: Upload Valgrind Files (aarch64)",
+            "type": "qnx-shell",
+            "command": "upload",
+            "args": [
+             	"${env:QNX_TARGET}/aarch64le/usr/bin/valgrind",
+				"${env:QNX_TARGET}/aarch64le/usr/lib/valgrind/vgpreload_core-arm64-nto.so",
+              	"${env:QNX_TARGET}/aarch64le/usr/lib/valgrind/vgpreload_memcheck-arm64-nto.so",
+              	"${env:QNX_TARGET}/aarch64le/usr/lib/valgrind/memcheck-arm64-nto",
+              	"${env:QNX_TARGET}/aarch64le/lib/libc.so.6",
+				"${env:QNX_TARGET}/aarch64le/lib/libc.so.6.sym",
+            	"/tmp"
+            ]
+        },
+		{
+            "label": "QNX: Upload Valgrind Files (x86_64)",
+            "type": "qnx-shell",
+            "command": "upload",
+            "args": [
+             	"${env:QNX_TARGET}/x86_64/usr/bin/valgrind",
+				"${env:QNX_TARGET}/x86_64/usr/lib/valgrind/vgpreload_core-amd64-nto.so",
+              	"${env:QNX_TARGET}/x86_64/usr/lib/valgrind/vgpreload_memcheck-amd64-nto.so",
+              	"${env:QNX_TARGET}/x86_64/usr/lib/valgrind/memcheck-amd64-nto",
+              	"${env:QNX_TARGET}/x86_64/lib/libc.so.6",
+				"${env:QNX_TARGET}/x86_64/lib/libc.so.6.sym",
+            	"/tmp"
+            ]
+        }
+	]
+}

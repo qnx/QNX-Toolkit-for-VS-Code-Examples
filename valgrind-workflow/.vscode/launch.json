@@ -1,0 +1,91 @@
+{
+  "version": "2.0.0",
+  "configurations": [
+    {
+      "type": "qnx-gdb",
+      "request": "launch",
+      "name": "QNX: valgrind_demo",
+      "gdb": "gdb",
+      "program": "${command:qnx.autodetectBinary}",
+      "remotePath": "valgrind_demo",
+      "qnxtarget": "default",
+      "upload": true,
+      "stopAtEntry": true,
+      "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "type": "qnx-gdb",
+      "request": "launch",
+      "name": "QNX: run with valgrind (aarch64)",
+      "gdb": "none",
+      "program": "/tmp/valgrind",                          
+      "args": [
+        "--tool=memcheck",
+        "--default-suppressions=no",
+        "--extra-debuginfo-path=/tmp",
+        "--leak-check=full",
+        "--show-leak-kinds=all",
+        "--undef-value-errors=no",
+        "--show-reachable=no",
+        "--log-file=/tmp/valgrind_out.valgrind",
+        "/tmp/${workspaceFolderBasename}"
+      ],
+      "env": {
+        "PATH": "/tmp:$PATH",
+        "VALGRIND_LIB": "/tmp",
+        "LD_LIBRARY_PATH": "/tmp:$LD_LIBRARY_PATH"
+      },
+      "qnxtarget": "default",
+      "upload": false,
+      "files": [
+        {
+          "operation": "upload",
+          "hostPath": "${workspaceFolder}/nto/aarch64/o-le/${workspaceFolderBasename}",
+          "remotePath": "/tmp/${workspaceFolderBasename}"
+        },
+        {
+          "operation": "download",
+          "remotePath": "/tmp/valgrind_out.valgrind",
+          "hostPath": "valgrind_${command:qnx.timestamp}.valgrind"
+        }
+        ]
+      },
+      {
+      "type": "qnx-gdb",
+      "request": "launch",
+      "name": "QNX: run with valgrind (x86_64)",
+      "gdb": "none",
+      "program": "/tmp/valgrind",                          
+      "args": [
+        "--tool=memcheck",
+        "--default-suppressions=no",
+        "--extra-debuginfo-path=/tmp",
+        "--leak-check=full",
+        "--show-leak-kinds=all",
+        "--undef-value-errors=no",
+        "--show-reachable=no",
+        "--log-file=/tmp/valgrind_out.valgrind",
+        "/tmp/${workspaceFolderBasename}"
+      ],
+      "env": {
+        "PATH": "/tmp:$PATH",
+        "VALGRIND_LIB": "/tmp",
+        "LD_LIBRARY_PATH": "/tmp:$LD_LIBRARY_PATH"
+      },
+      "qnxtarget": "default",
+      "upload": false,
+      "files": [
+        {
+          "operation": "upload",
+          "hostPath": "${workspaceFolder}/nto/x86_64/o/${workspaceFolderBasename}",
+          "remotePath": "/tmp/${workspaceFolderBasename}"
+        },
+        {
+          "operation": "download",
+          "remotePath": "/tmp/valgrind_out.valgrind",
+          "hostPath": "valgrind_${command:qnx.timestamp}.valgrind"
+        }
+        ]
+      }
+  ]
+}
