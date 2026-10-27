@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "configurations": [
+    {
+      "type": "qnx-gdb",
+      "request": "launch",
+      "name": "QNX: Code_coverage_workflow run",
+      "gdb": "gdb",
+      "program": "${command:qnx.autodetectBinary}",
+      "remotePath": "Code_coverage_workflow",
+      "qnxtarget": "default",
+      "upload": true,
+      "stopAtEntry": false,
+      "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "type": "qnx-gdb",
+      "request": "launch",
+      "name": "QNX: Code_coverage_workflow gdb",
+      "gdb": "gdb",
+      "program": "${command:qnx.autodetectBinary}",
+      "remotePath": "Code_coverage_workflow",
+      "qnxtarget": "default",
+      "upload": true,
+      "stopAtEntry": true,
+      "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "type": "qnx-gdb",
+      "request": "launch",
+      "name": "QNX: Code_coverage_workflow with GCOV",
+      "gdb": "gdb",
+      "env": {
+        "GCOV_PREFIX_STRIP": 4,
+        "GCOV_PREFIX": "/tmp"
+      },
+      "program": "${command:qnx.autodetectBinary}",
+      "remotePath": "Code_coverage_workflow",
+      "qnxtarget": "default",
+      "upload": true,
+      "stopAtEntry": false,
+      "preLaunchTask": "${defaultBuildTask}"
+    }
+  ]
+}
