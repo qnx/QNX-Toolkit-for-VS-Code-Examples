@@ -1,0 +1,187 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "QNX: build debug",
+			"command": "make CCOPTS+='-fstack-protector-strong -fprofile-arcs -ftest-coverage -O0' LDOPTS+=-fprofile-arcs DEBUG=-g OPTIMIZE_TYPE=NONE",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"Path": "${env:Path}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "QNX: install",
+			"command": "make INSTALL_ROOT_nto=${config:qnx.installRoot}/nto USE_INSTALL_ROOT=1 hinstall install",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"Path": "${env:Path}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"type": "shell",
+			"label": "QNX: clean",
+			"command": "make clean",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"Path": "${env:Path}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"type": "shell",
+			"label": "QNX: build",
+			"command": "make",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"QNX_HOST": "${env:QNX_HOST}",
+					"QNX_TARGET": "${env:QNX_TARGET}",
+					"MAKEFLAGS": "${env:MAKEFLAGS}",
+					"Path": "${env:Path}"
+				}
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			}
+		},
+		{
+			"label": "test GCOV",
+			"type": "shell",
+			"command": "ln",
+			"args": [
+				"echo",
+				"${env:ARCH}/usr/bin/ntoaarch64-gcov",
+				"${workspaceFolder}/gcov"
+			]
+		},
+		{
+			"label": "Link GCOV",
+			"type": "shell",
+			"command": "ln",
+			"args": [
+				"-sfv",
+				"${env:QNX_HOST}/usr/bin/ntoaarch64-gcov",
+				"${workspaceFolder}/gcov"
+			]
+		},
+		{
+			"label": "Clear Coverage",
+			"type": "shell",
+			"command": "rm",
+			"args": [
+				"-rfv",
+				"coverage",
+				"${workspaceFolder}/nto/aarch64/o-le/*.gcda",
+				"${workspaceFolder}/nto/aarch64/o-le/*.gcvov"
+			],
+			"dependsOn": [
+				"Link GCOV"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "Coverage Download",
+			"type": "qnx-shell",
+			"command": "download",
+			"args": [
+				"/tmp/nto/aarch64/o-le/${workspaceFolderBasename}.c.gcda",
+				"${workspaceFolder}/nto/aarch64/o-le/${workspaceFolderBasename}.c.gcda"
+			],
+			"dependsOn":[
+				"Clear Coverage"
+			]
+		},
+		{
+			"label": "LCOV Report",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"PATH": "${workspaceFolder}:${env:PATH}"
+				}
+			},
+			"command": "lcov",
+			"args": [
+				"--rc",
+				"lcov_branch_coverage=1",
+				"--capture",
+				"--directory",
+				"${workspaceFolder}/",
+				"--output-file",
+				"${workspaceFolder}/nto/aarch64/o-le/${workspaceFolderBasename}.gcov"
+			],
+			"dependsOn": [
+				"Coverage Download"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "Generate HTML Report",
+			"command": "genhtml",
+			"args": [
+				"--branch-coverage",
+				"--num-spaces",
+				"4",
+				"-o",
+				"${workspaceFolder}/coverage/",
+				"${workspaceFolder}/nto/aarch64/o-le/${workspaceFolderBasename}.gcov"
+			],
+			"dependsOn":[
+				"LCOV Report"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "Show HTML Report",
+			"command": "firefox",
+			"args": [
+				"${workspaceFolder}/coverage/index.html"
+			],
+			"dependsOn":[
+				"Generate HTML Report"
+			],
+			"problemMatcher": []
+		}
+	]
+}
