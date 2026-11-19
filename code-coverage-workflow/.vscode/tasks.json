@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "QNX: build debug",
+			"label": "QNX: build coverage",
 			"command": "make CCOPTS+='-fstack-protector-strong -fprofile-arcs -ftest-coverage -O0' LDOPTS+=-fprofile-arcs DEBUG=-g OPTIMIZE_TYPE=NONE",
 			"options": {
 				"cwd": "${workspaceFolder}",

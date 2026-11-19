@@ -1,8 +1,8 @@
 # QNX Code Coverage Workflow
 
-This example provides Visual Studio Code configurations for collecting and viewing code coverage results for a QNX application using the QNX Toolkit for Visual Studio Code, GCOV, and LCOV.
+This example provides Visual Studio Code configurations for generating and viewing code coverage results for a QNX application using the QNX Toolkit for Visual Studio Code, GCOV, and LCOV.
 
-The provided `tasks.json` and `launch.json` configurations help automate the code coverage workflow. The application is built with GCC coverage instrumentation, launched on a remote QNX target with the required GCOV environment settings, and the generated coverage data is downloaded to the development host. LCOV is then used to capture the coverage data, and `genhtml` generates an HTML report for viewing the coverage results.
+The workflow is intended to be used with your own QNX application project. The application is built and launched from Visual Studio Code using the provided `tasks.json` and `launch.json` configurations. The configurations enable GCC coverage instrumentation, execute the application on a remote QNX target, and download the generated coverage data to the Linux development host. LCOV is then used to capture the coverage data, and `genhtml` generates an HTML report for viewing the coverage results.
 
 ## Requirements
 
@@ -15,6 +15,10 @@ The provided `tasks.json` and `launch.json` configurations help automate the cod
 
 - `.vscode/tasks.json` – Build and coverage-processing tasks, including coverage instrumentation, GCOV setup, coverage data download, LCOV capture, HTML report generation, and report display.
 - `.vscode/launch.json` – QNX GDB launch configurations for normal execution, debugging, and execution with GCOV enabled.
+
+## What's Not Included
+
+A sample C application is not included. The workflow is designed to be used with your own C application, which you build and run from Visual Studio Code using the provided configurations to collect and generate code coverage results.
 
 ## Workflow
 
@@ -30,13 +34,13 @@ The overall workflow demonstrated by these configurations is:
 
 ## Usage
 
-1. Add the provided `.vscode` configurations to your QNX application project.
+1. Add the provided `.vscode` configurations to your QNX C application project.
 
 2. Open the project in Visual Studio Code on a Linux development host and connect to the QNX target.
 
 3. Build the application with code coverage instrumentation using:
 
-   `QNX: build debug`
+   `QNX: build coverage`
 
 4. Run the application using the code coverage launch configuration:
 
